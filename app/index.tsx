@@ -34,9 +34,9 @@ export default function Home() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.menuButton}>
-          <Menu size={24} color="#333" />
+          {/* <Menu size={24} color="#333" /> */}
         </TouchableOpacity>
-        <Text style={styles.title}>Bible App</Text>
+        <Text style={styles.title}>Alkitab - Sample App</Text>
         <View style={{ width: 24 }} />
       </View>
 
