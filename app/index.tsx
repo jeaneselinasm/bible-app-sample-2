@@ -1,24 +1,35 @@
-"use client"
+"use client";
 
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { useState } from "react"
-import { ChevronDown, Book, Menu } from "lucide-react-native"
-import { router } from "expo-router"
-import { bibleData } from "../data/bible-data"
-import { translationsData } from "../data/translation"
-import { bibleBooks } from "../data/books"
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useState } from "react";
+import { ChevronDown, Book, Menu } from "lucide-react-native";
+import { router } from "expo-router";
+import { bibleData } from "../data/bible-data";
+import { translationsData } from "../data/translation";
+import { bibleBooks } from "../data/books";
 
 export default function Home() {
-  const [selectedTranslation, setSelectedTranslation] = useState("TB1")
-  const [isTranslationOpen, setIsTranslationOpen] = useState(false)
-  const [selectedBook, setSelectedBook] = useState("Genesis")
-  const [isBookOpen, setIsBookOpen] = useState(false)
-  const [selectedChapter, setSelectedChapter] = useState(1)
-  const [isChapterOpen, setIsChapterOpen] = useState(false)
+  const [selectedTranslation, setSelectedTranslation] = useState("TB1");
+  const [isTranslationOpen, setIsTranslationOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState("Kejadian");
+  const [isBookOpen, setIsBookOpen] = useState(false);
+  const [selectedChapter, setSelectedChapter] = useState(1);
+  const [isChapterOpen, setIsChapterOpen] = useState(false);
 
-  const currentBookData = bibleData.books.find((book) => book.name === selectedBook)
-  const currentChapterData = currentBookData?.chapters.find((chapter) => chapter.number === selectedChapter)
+  const currentBookData = bibleData.books.find(
+    (book) => book.name === selectedBook
+  );
+  const currentChapterData = currentBookData?.chapters.find(
+    (chapter) => chapter.number === selectedChapter
+  );
 
   const navigateToChapter = (book: string, chapter: number) => {
     router.push({
@@ -28,11 +39,8 @@ export default function Home() {
         book: book,
         chapter: chapter,
       },
-    })
-  }
-
-
-
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,16 +55,14 @@ export default function Home() {
 
       {/* Selection Header */}
       <View style={styles.selectionHeader}>
-
-
         {/* Translation Selector */}
         <View style={styles.selectorContainer}>
           <TouchableOpacity
             style={styles.selector}
             onPress={() => {
-              setIsTranslationOpen(!isTranslationOpen)
-              setIsBookOpen(false)
-              setIsChapterOpen(false)
+              setIsTranslationOpen(!isTranslationOpen);
+              setIsBookOpen(false);
+              setIsChapterOpen(false);
             }}
           >
             <Text style={styles.selectorText}>{selectedTranslation}</Text>
@@ -70,8 +76,8 @@ export default function Home() {
                   key={translation.id}
                   style={styles.dropdownItem}
                   onPress={() => {
-                    setSelectedTranslation(translation.name)
-                    setIsTranslationOpen(false)
+                    setSelectedTranslation(translation.name);
+                    setIsTranslationOpen(false);
                   }}
                 >
                   <Text style={styles.dropdownText}>{translation.name}</Text>
@@ -81,15 +87,14 @@ export default function Home() {
           )}
         </View>
 
-
         {/* Book Selector */}
-        <View style={styles.selectorContainer}>
+        <View style={[styles.selectorContainer]}>
           <TouchableOpacity
             style={styles.selector}
             onPress={() => {
-              setIsBookOpen(!isBookOpen)
-              setIsTranslationOpen(false)
-              setIsChapterOpen(false)
+              setIsBookOpen(!isBookOpen);
+              setIsTranslationOpen(false);
+              setIsChapterOpen(false);
             }}
           >
             <Book size={16} color="#333" />
@@ -98,40 +103,63 @@ export default function Home() {
           </TouchableOpacity>
 
           {isBookOpen && (
-            <View style={[styles.dropdown, styles.bookDropdown]}>
-            <ScrollView
-              style={{ maxHeight: 400 }}
-              contentContainerStyle={{ paddingVertical: 4, flexGrow: 1 }}
-              showsVerticalScrollIndicator={true}
-              nestedScrollEnabled={true}
+            <View
+              style={[styles.dropdown, styles.bookDropdown]}
             >
-              {bibleBooks.map((book) => (
-                <TouchableOpacity
-                  key={book.id}
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    setSelectedBook(book.name)
-                    setSelectedChapter(1)
-                    setIsBookOpen(false)
-                  }}
-                >
-                  <Text style={styles.dropdownText}>{book.name}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-          
+              <ScrollView
+                  style={{ maxHeight: 400, borderWidth : 1, borderColor:'red' }}
+                  contentContainerStyle={{ paddingVertical: 4 }}
+                  showsVerticalScrollIndicator={true}
+                  nestedScrollEnabled={true}
+                  scrollEnabled={true}
+                  overScrollMode="always"
+                  keyboardShouldPersistTaps="handled"
+
+              >
+                {bibleBooks.map((book) => (
+                  <TouchableOpacity
+                    key={book.id}
+                    style={styles.dropdownItem}
+                    onPress={() => {
+                      setSelectedBook(book.name);
+                      setSelectedChapter(1);
+                      setIsBookOpen(false);
+                    }}
+                  >
+                    <Text style={styles.dropdownText}>{book.name}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
           )}
         </View>
 
+        {/* test flat list */}
+        {/* <FlatList
+          data={bibleBooks}
+          keyExtractor={(item) => item.id.toString()}
+          style={{ maxHeight: 300 }}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.dropdownItem}
+              onPress={() => {
+                setSelectedBook(item.name);
+                setSelectedChapter(1);
+                setIsBookOpen(false);
+              }}
+            >
+              <Text style={styles.dropdownText}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+        /> */}
         {/* Chapter Selector */}
         <View style={styles.selectorContainer}>
           <TouchableOpacity
             style={styles.selector}
             onPress={() => {
-              setIsChapterOpen(!isChapterOpen)
-              setIsTranslationOpen(false)
-              setIsBookOpen(false)
+              setIsChapterOpen(!isChapterOpen);
+              setIsTranslationOpen(false);
+              setIsBookOpen(false);
             }}
           >
             <Text style={styles.selectorText}>Chapter {selectedChapter}</Text>
@@ -146,8 +174,8 @@ export default function Home() {
                     key={chapter.number}
                     style={styles.dropdownItem}
                     onPress={() => {
-                      setSelectedChapter(chapter.number)
-                      setIsChapterOpen(false)
+                      setSelectedChapter(chapter.number);
+                      setIsChapterOpen(false);
                     }}
                   >
                     <Text style={styles.dropdownText}>{chapter.number}</Text>
@@ -175,19 +203,23 @@ export default function Home() {
         </View>
       </ScrollView>
 
+      
+
       {/* Navigation Footer */}
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.navButton}
           onPress={() => {
             if (selectedChapter > 1) {
-              setSelectedChapter(selectedChapter - 1)
+              setSelectedChapter(selectedChapter - 1);
             } else {
-              const currentBookIndex = bibleData.books.findIndex((book) => book.name === selectedBook)
+              const currentBookIndex = bibleData.books.findIndex(
+                (book) => book.name === selectedBook
+              );
               if (currentBookIndex > 0) {
-                const prevBook = bibleData.books[currentBookIndex - 1]
-                setSelectedBook(prevBook.name)
-                setSelectedChapter(prevBook.chapters.length)
+                const prevBook = bibleData.books[currentBookIndex - 1];
+                setSelectedBook(prevBook.name);
+                setSelectedChapter(prevBook.chapters.length);
               }
             }
           }}
@@ -195,21 +227,26 @@ export default function Home() {
           <Text style={styles.navButtonText}>Previous</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.readButton} onPress={() => navigateToChapter(selectedBook, selectedChapter)}>
+        <TouchableOpacity
+          style={styles.readButton}
+          onPress={() => navigateToChapter(selectedBook, selectedChapter)}
+        >
           <Text style={styles.readButtonText}>Read Full Chapter</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.navButton}
           onPress={() => {
-            const maxChapters = currentBookData?.chapters.length || 1
+            const maxChapters = currentBookData?.chapters.length || 1;
             if (selectedChapter < maxChapters) {
-              setSelectedChapter(selectedChapter + 1)
+              setSelectedChapter(selectedChapter + 1);
             } else {
-              const currentBookIndex = bibleData.books.findIndex((book) => book.name === selectedBook)
+              const currentBookIndex = bibleData.books.findIndex(
+                (book) => book.name === selectedBook
+              );
               if (currentBookIndex < bibleData.books.length - 1) {
-                setSelectedBook(bibleData.books[currentBookIndex + 1].name)
-                setSelectedChapter(1)
+                setSelectedBook(bibleData.books[currentBookIndex + 1].name);
+                setSelectedChapter(1);
               }
             }
           }}
@@ -218,7 +255,7 @@ export default function Home() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -247,15 +284,16 @@ const styles = StyleSheet.create({
   selectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingVertical: 12,
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
+    gap : 20
   },
   selectorContainer: {
-    position: "relative",
-    zIndex: 1,
+    position : 'relative',
+    flex : 1,
   },
   selector: {
     flexDirection: "row",
@@ -284,12 +322,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,
+    elevation: 5, // Increased elevation for Android
     marginTop: 4,
-    zIndex: 10,
+    zIndex: 1000, // Increased z-index
   },
   bookDropdown: {
     width: 150,
+    maxHeight: 300,
+    position: "absolute",
+    zIndex: 1000, // Higher z-index
   },
   dropdownItem: {
     paddingHorizontal: 12,
@@ -361,5 +402,4 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#fff",
   },
-})
-
+});
