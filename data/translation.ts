@@ -11,5 +11,9 @@ export const translationsData = [
         "id" : 3,
         "name" : "ESV"
     },
+    {
+        "id" : 4,
+        "name" : "ESV"
+    },
     
 ]

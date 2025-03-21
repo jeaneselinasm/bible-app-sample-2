@@ -24,12 +24,14 @@ export default function Home() {
   const [selectedChapter, setSelectedChapter] = useState(1);
   const [isChapterOpen, setIsChapterOpen] = useState(false);
 
-  const currentBookData = bibleData.books.find(
-    (book) => book.name === selectedBook
-  );
-  const currentChapterData = currentBookData?.chapters.find(
-    (chapter) => chapter.number === selectedChapter
-  );
+  // const currentBookData = bibleData.books.find(
+  //   (book) => book.name === selectedBook
+  // );
+  // const currentChapterData = currentBookData?.chapters.find(
+  //   (chapter) => chapter.number === selectedChapter
+  // );
+
+  const currentBookData = bibleBooks.find((el) => el.name === selectedBook);
 
   const navigateToChapter = (book: string, chapter: number) => {
     router.push({
@@ -103,18 +105,15 @@ export default function Home() {
           </TouchableOpacity>
 
           {isBookOpen && (
-            <View
-              style={[styles.dropdown, styles.bookDropdown]}
-            >
+            <View style={[styles.dropdown, styles.bookDropdown]}>
               <ScrollView
-                  style={{ maxHeight: 400 }}
-                  contentContainerStyle={{ paddingVertical: 4 }}
-                  showsVerticalScrollIndicator={true}
-                  nestedScrollEnabled={true}
-                  scrollEnabled={true}
-                  overScrollMode="always"
-                  keyboardShouldPersistTaps="handled"
-
+                style={{ maxHeight: 400 }}
+                contentContainerStyle={{ paddingVertical: 4 }}
+                showsVerticalScrollIndicator={true}
+                nestedScrollEnabled={true}
+                scrollEnabled={true}
+                overScrollMode="always"
+                keyboardShouldPersistTaps="handled"
               >
                 {bibleBooks.map((book) => (
                   <TouchableOpacity
@@ -134,25 +133,7 @@ export default function Home() {
           )}
         </View>
 
-        {/* test flat list */}
-        {/* <FlatList
-          data={bibleBooks}
-          keyExtractor={(item) => item.id.toString()}
-          style={{ maxHeight: 300 }}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.dropdownItem}
-              onPress={() => {
-                setSelectedBook(item.name);
-                setSelectedChapter(1);
-                setIsBookOpen(false);
-              }}
-            >
-              <Text style={styles.dropdownText}>{item.name}</Text>
-            </TouchableOpacity>
-          )}
-        /> */}
-        {/* Chapter Selector */}
+        {/* chapter test */}
         <View style={styles.selectorContainer}>
           <TouchableOpacity
             style={styles.selector}
@@ -162,25 +143,29 @@ export default function Home() {
               setIsBookOpen(false);
             }}
           >
-            <Text style={styles.selectorText}>Chapter {selectedChapter}</Text>
+            <Text style={styles.selectorText}>Pasal {selectedChapter}</Text>
             <ChevronDown size={16} color="#333" />
           </TouchableOpacity>
 
           {isChapterOpen && (
             <View style={styles.dropdown}>
               <ScrollView style={{ maxHeight: 300 }}>
-                {currentBookData?.chapters.map((chapter) => (
-                  <TouchableOpacity
-                    key={chapter.number}
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      setSelectedChapter(chapter.number);
-                      setIsChapterOpen(false);
-                    }}
-                  >
-                    <Text style={styles.dropdownText}>{chapter.number}</Text>
-                  </TouchableOpacity>
-                ))}
+              {currentBookData &&
+  Array.from({ length: currentBookData.chapter }, (_, i) => i + 1).map(
+    (chapterNumber) => (
+      <TouchableOpacity
+        key={chapterNumber}
+        style={styles.dropdownItem}
+        onPress={() => {
+          setSelectedChapter(chapterNumber);
+          setIsChapterOpen(false);
+        }}
+      >
+        <Text style={styles.dropdownText}>Pasal {chapterNumber}</Text>
+      </TouchableOpacity>
+    )
+  )}
+
               </ScrollView>
             </View>
           )}
@@ -191,19 +176,19 @@ export default function Home() {
       <ScrollView style={styles.content}>
         <View style={styles.verseContainer}>
           <Text style={styles.chapterTitle}>
-            {selectedBook} {selectedChapter} ({selectedTranslation})
+           
+          {/* {selectedBook} {selectedChapter} ({selectedTranslation}) */}
+          {selectedBook} {selectedChapter} ({selectedTranslation})
           </Text>
 
-          {currentChapterData?.verses.map((verse) => (
+          {/* {currentChapterData?.verses.map((verse) => (
             <View key={verse.number} style={styles.verse}>
               <Text style={styles.verseNumber}>{verse.number}</Text>
               <Text style={styles.verseText}>{verse.text}</Text>
             </View>
-          ))}
+          ))} */}
         </View>
       </ScrollView>
-
-      
 
       {/* Navigation Footer */}
       <View style={styles.footer}>
@@ -289,11 +274,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
-    gap : 20
+    gap: 20,
   },
   selectorContainer: {
-    position : 'relative',
-    flex : 1,
+    position: "relative",
+    flex: 1,
   },
   selector: {
     flexDirection: "row",
