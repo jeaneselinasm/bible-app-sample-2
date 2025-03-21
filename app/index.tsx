@@ -24,13 +24,6 @@ export default function Home() {
   const [selectedChapter, setSelectedChapter] = useState(1);
   const [isChapterOpen, setIsChapterOpen] = useState(false);
 
-  // const currentBookData = bibleData.books.find(
-  //   (book) => book.name === selectedBook
-  // );
-  // const currentChapterData = currentBookData?.chapters.find(
-  //   (chapter) => chapter.number === selectedChapter
-  // );
-
   const currentBookData = bibleBooks.find((el) => el.name === selectedBook);
 
   const navigateToChapter = (book: string, chapter: number) => {
@@ -41,6 +34,13 @@ export default function Home() {
         book: book,
         chapter: chapter,
       },
+    });
+  };
+
+  const navigateToTest = () => {
+    router.push({
+      pathname: "/test",
+     
     });
   };
 
@@ -133,7 +133,7 @@ export default function Home() {
           )}
         </View>
 
-        {/* chapter test */}
+        {/* Chapter Selector */}
         <View style={styles.selectorContainer}>
           <TouchableOpacity
             style={styles.selector}
@@ -150,22 +150,24 @@ export default function Home() {
           {isChapterOpen && (
             <View style={styles.dropdown}>
               <ScrollView style={{ maxHeight: 300 }}>
-              {currentBookData &&
-  Array.from({ length: currentBookData.chapter }, (_, i) => i + 1).map(
-    (chapterNumber) => (
-      <TouchableOpacity
-        key={chapterNumber}
-        style={styles.dropdownItem}
-        onPress={() => {
-          setSelectedChapter(chapterNumber);
-          setIsChapterOpen(false);
-        }}
-      >
-        <Text style={styles.dropdownText}>Pasal {chapterNumber}</Text>
-      </TouchableOpacity>
-    )
-  )}
-
+                {currentBookData &&
+                  Array.from(
+                    { length: currentBookData.chapter },
+                    (_, i) => i + 1
+                  ).map((chapterNumber) => (
+                    <TouchableOpacity
+                      key={chapterNumber}
+                      style={styles.dropdownItem}
+                      onPress={() => {
+                        setSelectedChapter(chapterNumber);
+                        setIsChapterOpen(false);
+                      }}
+                    >
+                      <Text style={styles.dropdownText}>
+                        Pasal {chapterNumber}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
               </ScrollView>
             </View>
           )}
@@ -176,9 +178,8 @@ export default function Home() {
       <ScrollView style={styles.content}>
         <View style={styles.verseContainer}>
           <Text style={styles.chapterTitle}>
-           
-          {/* {selectedBook} {selectedChapter} ({selectedTranslation}) */}
-          {selectedBook} {selectedChapter} ({selectedTranslation})
+            {/* {selectedBook} {selectedChapter} ({selectedTranslation}) */}
+            {selectedBook} {selectedChapter} ({selectedTranslation})
           </Text>
 
           {/* {currentChapterData?.verses.map((verse) => (
@@ -217,6 +218,13 @@ export default function Home() {
           onPress={() => navigateToChapter(selectedBook, selectedChapter)}
         >
           <Text style={styles.readButtonText}>Read Full Chapter</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.readButton}
+          onPress={() => navigateToTest()}
+        >
+          <Text style={styles.readButtonText}>Test</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
