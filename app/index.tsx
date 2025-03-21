@@ -107,7 +107,7 @@ export default function Home() {
               style={[styles.dropdown, styles.bookDropdown]}
             >
               <ScrollView
-                  style={{ maxHeight: 400, borderWidth : 1, borderColor:'red' }}
+                  style={{ maxHeight: 400 }}
                   contentContainerStyle={{ paddingVertical: 4 }}
                   showsVerticalScrollIndicator={true}
                   nestedScrollEnabled={true}
