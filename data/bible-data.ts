@@ -1,6 +1,6 @@
 // This is dummy data for demonstration purposes
 export const bibleData = {
-    translations: ["KJV", "NIV", "ESV", "NKJV", "NLT", "CSB", "NASB"],
+    translations: ["SAW", "TB1", "ESV"],
     books: [
       {
         name: "Genesis",
@@ -68,6 +68,28 @@ export const bibleData = {
           },
           {
             number: 3,
+            verses: [
+              {
+                number: 1,
+                text: "Now the serpent was more subtil than any beast of the field which the LORD God had made. And he said unto the woman, Yea, hath God said, Ye shall not eat of every tree of the garden?",
+              },
+              {
+                number: 2,
+                text: "And the woman said unto the serpent, We may eat of the fruit of the trees of the garden:",
+              },
+              {
+                number: 3,
+                text: "But of the fruit of the tree which is in the midst of the garden, God hath said, Ye shall not eat of it, neither shall ye touch it, lest ye die.",
+              },
+              { number: 4, text: "And the serpent said unto the woman, Ye shall not surely die:" },
+              {
+                number: 5,
+                text: "For God doth know that in the day ye eat thereof, then your eyes shall be opened, and ye shall be as gods, knowing good and evil.",
+              },
+            ],
+          },
+          {
+            number: 4,
             verses: [
               {
                 number: 1,

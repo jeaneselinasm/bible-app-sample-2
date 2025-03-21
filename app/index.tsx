@@ -6,9 +6,11 @@ import { useState } from "react"
 import { ChevronDown, Book, Menu } from "lucide-react-native"
 import { router } from "expo-router"
 import { bibleData } from "../data/bible-data"
+import { translationsData } from "../data/translation"
+import { bibleBooks } from "../data/books"
 
 export default function Home() {
-  const [selectedTranslation, setSelectedTranslation] = useState("KJV")
+  const [selectedTranslation, setSelectedTranslation] = useState("TB1")
   const [isTranslationOpen, setIsTranslationOpen] = useState(false)
   const [selectedBook, setSelectedBook] = useState("Genesis")
   const [isBookOpen, setIsBookOpen] = useState(false)
@@ -29,6 +31,9 @@ export default function Home() {
     })
   }
 
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -42,6 +47,8 @@ export default function Home() {
 
       {/* Selection Header */}
       <View style={styles.selectionHeader}>
+
+
         {/* Translation Selector */}
         <View style={styles.selectorContainer}>
           <TouchableOpacity
@@ -58,21 +65,22 @@ export default function Home() {
 
           {isTranslationOpen && (
             <View style={styles.dropdown}>
-              {bibleData.translations.map((translation) => (
+              {translationsData.map((translation) => (
                 <TouchableOpacity
-                  key={translation}
+                  key={translation.id}
                   style={styles.dropdownItem}
                   onPress={() => {
-                    setSelectedTranslation(translation)
+                    setSelectedTranslation(translation.name)
                     setIsTranslationOpen(false)
                   }}
                 >
-                  <Text style={styles.dropdownText}>{translation}</Text>
+                  <Text style={styles.dropdownText}>{translation.name}</Text>
                 </TouchableOpacity>
               ))}
             </View>
           )}
         </View>
+
 
         {/* Book Selector */}
         <View style={styles.selectorContainer}>
@@ -91,22 +99,28 @@ export default function Home() {
 
           {isBookOpen && (
             <View style={[styles.dropdown, styles.bookDropdown]}>
-              <ScrollView style={{ maxHeight: 300 }}>
-                {bibleData.books.map((book) => (
-                  <TouchableOpacity
-                    key={book.name}
-                    style={styles.dropdownItem}
-                    onPress={() => {
-                      setSelectedBook(book.name)
-                      setSelectedChapter(1)
-                      setIsBookOpen(false)
-                    }}
-                  >
-                    <Text style={styles.dropdownText}>{book.name}</Text>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
+            <ScrollView
+              style={{ maxHeight: 400 }}
+              contentContainerStyle={{ paddingVertical: 4, flexGrow: 1 }}
+              showsVerticalScrollIndicator={true}
+              nestedScrollEnabled={true}
+            >
+              {bibleBooks.map((book) => (
+                <TouchableOpacity
+                  key={book.id}
+                  style={styles.dropdownItem}
+                  onPress={() => {
+                    setSelectedBook(book.name)
+                    setSelectedChapter(1)
+                    setIsBookOpen(false)
+                  }}
+                >
+                  <Text style={styles.dropdownText}>{book.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+          
           )}
         </View>
 
